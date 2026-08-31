@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<!--
+  ============================================================================
+  TENUOUS STUDIOS — tenuousstudios.com
+  Static site. No build step, no dependencies, no external requests.
+
+  Repo layout:
+    index.html
+    CNAME                     (created for you by GitHub Pages settings)
+    images/
+      logo.png                studio wordmark, transparent
+      flipsaw-wordmark.png    game wordmark, transparent
+      flipsaw-*.webp / .jpg   screenshots (webp with jpg fallback)
+
+  ADDING A SCREENSHOT: drop the .webp + .jpg in images/, then copy one
+  <figure class="slide"> block in the carousel and change the filenames,
+  alt text, and caption. Nothing else to update — dots are generated.
+
+  REMAINING TODOs (search "TODO"):
+    1. Contact email addresses — confirm these exist before publishing
+    2. Real social profile URLs
+    3. Founding year in the fact sheet
+    4. Press kit asset zips
+  ============================================================================
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tenuous Studios — Makers of Flipsaw</title>
+<meta name="description" content="Tenuous Studios is a small game studio in the greater Seattle area. Flipsaw, a roguelike jigsaw puzzle game with sudoku elements, is our debut project.">
+<meta property="og:title" content="Tenuous Studios — Makers of Flipsaw">
+<meta property="og:description" content="A roguelike jigsaw puzzle game with sudoku elements. Coming in 2026.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.tenuousstudios.com/">
+<meta property="og:image" content="https://www.tenuousstudios.com/images/flipsaw-puzzle.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%230e0f13'/><text x='16' y='24' font-family='Georgia,serif' font-size='22' font-weight='bold' fill='%23fff' text-anchor='middle'>T</text></svg>">
+<style>
+  :root{
+    --bg:#0e0f13;
+    --bg-raised:#16181f;
+    --bg-sunken:#08090c;
+    --line:#252932;
+    --text:#e7e9ee;
+    --text-dim:#9aa1b1;
+    --text-faint:#6b7280;
+    --accent:#ff6b4a;
+    --accent-soft:#ffb199;
+    --radius:10px;
+    --max:1080px;
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font:16px/1.65 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  img{max-width:100%;display:block}
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+  h1,h2,h3{line-height:1.2;letter-spacing:-0.02em;margin:0}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
+
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 24px}
+
+  /* ---------- header ---------- */
+  header{
+    position:sticky;top:0;z-index:20;
+    background:rgba(14,15,19,.88);
+    backdrop-filter:saturate(140%) blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .bar{display:flex;align-items:center;justify-content:space-between;height:64px;gap:20px}
+  .brand{display:block;flex:0 0 auto}
+  .brand img{height:21px;width:auto}
+  .brand:hover{text-decoration:none;opacity:.85}
+  nav ul{display:flex;gap:26px;list-style:none;margin:0;padding:0}
+  nav a{color:var(--text-dim);font-size:14.5px}
+  nav a:hover{color:var(--text);text-decoration:none}
+  @media (max-width:620px){
+    .wrap{padding:0 18px}
+    .bar{gap:12px;height:58px}
+    .brand img{height:17px}
+    nav ul{gap:15px} nav a{font-size:13px}
+  }
+
+  /* ---------- hero ---------- */
+  .hero{padding:100px 0 78px;border-bottom:1px solid var(--line);position:relative;overflow:hidden}
+  .hero::after{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background:radial-gradient(60% 80% at 15% 0%,rgba(255,107,74,.10),transparent 70%);
+  }
+  .hero .wrap{position:relative}
+  .eyebrow{
+    font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--accent);font-weight:600;margin-bottom:18px;
+  }
+  .hero h1{font-size:clamp(34px,6vw,58px);font-weight:700;max-width:17ch}
+  .hero p{color:var(--text-dim);font-size:clamp(16px,2.2vw,19px);max-width:54ch;margin:22px 0 0}
+  .cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px}
+  .btn{
+    display:inline-block;padding:11px 20px;border-radius:var(--radius);
+    font-size:14.5px;font-weight:560;border:1px solid transparent;
+  }
+  .btn-primary{background:var(--accent);color:#1a0d08}
+  .btn-primary:hover{background:var(--accent-soft);text-decoration:none}
+  .btn-ghost{border-color:var(--line);color:var(--text)}
+  .btn-ghost:hover{border-color:var(--text-faint);text-decoration:none}
+
+  /* ---------- sections ---------- */
+  section{padding:76px 0;border-bottom:1px solid var(--line)}
+  .section-head{margin-bottom:34px}
+  .section-head h2{font-size:clamp(24px,3.4vw,32px);font-weight:660}
+  .section-head p{color:var(--text-dim);margin:10px 0 0;max-width:58ch}
+
+  /* ---------- carousel ---------- */
+  .carousel{
+    position:relative;background:var(--bg-sunken);
+    border:1px solid var(--line);border-radius:14px;overflow:hidden;
+  }
+  .viewport{overflow:hidden;touch-action:pan-y}
+  .track{display:flex;transition:transform .42s cubic-bezier(.4,.05,.2,1)}
+  .track.no-anim{transition:none}
+  .slide{margin:0;flex:0 0 100%;min-width:0}
+  .slide img{width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;background:#000}
+  @media (prefers-reduced-motion:reduce){ .track{transition:none} }
+
+  .nav-btn{
+    position:absolute;top:50%;transform:translateY(-50%);
+    width:42px;height:42px;border-radius:50%;
+    background:rgba(10,11,14,.72);border:1px solid rgba(255,255,255,.16);
+    color:#fff;cursor:pointer;display:grid;place-items:center;
+    backdrop-filter:blur(6px);transition:background .15s,border-color .15s;
+  }
+  .nav-btn:hover{background:rgba(10,11,14,.92);border-color:rgba(255,255,255,.34)}
+  .nav-btn svg{width:17px;height:17px;stroke:currentColor;stroke-width:2.2;fill:none;
+               stroke-linecap:round;stroke-linejoin:round}
+  .prev{left:14px} .next{right:14px}
+  @media (max-width:620px){ .nav-btn{width:36px;height:36px} .prev{left:8px} .next{right:8px} }
+
+  .caption{
+    position:absolute;left:0;right:0;bottom:0;
+    padding:38px 18px 14px;
+    background:linear-gradient(transparent,rgba(6,7,9,.88));
+    font-size:13.5px;color:#cfd4dd;pointer-events:none;
+  }
+
+  .dots{display:flex;justify-content:center;gap:9px;padding:16px 0 2px}
+  .dot{
+    width:8px;height:8px;padding:0;border-radius:50%;cursor:pointer;
+    background:#39414f;border:none;transition:background .18s,transform .18s;
+  }
+  .dot:hover{background:#5b657a}
+  .dot[aria-current="true"]{background:var(--accent);transform:scale(1.25)}
+
+  /* ---------- game details ---------- */
+  .game-meta{display:grid;gap:34px;grid-template-columns:1.15fr .85fr;margin-top:40px;align-items:start}
+  @media (max-width:800px){ .game-meta{grid-template-columns:1fr} }
+  .game-wordmark{height:34px;width:auto;margin-bottom:18px}
+  .tag{
+    display:inline-block;font-size:11.5px;letter-spacing:.08em;
+    text-transform:uppercase;font-weight:600;color:var(--accent);
+    border:1px solid rgba(255,107,74,.35);border-radius:99px;padding:3px 11px;
+    margin-bottom:16px;
+  }
+  .game-meta p{color:var(--text-dim);font-size:15.5px;margin:0 0 20px}
+
+  /* ---------- press ---------- */
+  .press-grid{display:grid;gap:34px;grid-template-columns:1.15fr .85fr}
+  @media (max-width:760px){ .press-grid{grid-template-columns:1fr} }
+  dl.facts{margin:0;border-top:1px solid var(--line)}
+  dl.facts div{display:flex;gap:18px;padding:11px 0;border-bottom:1px solid var(--line)}
+  dl.facts dt{flex:0 0 128px;color:var(--text-faint);font-size:14px}
+  dl.facts dd{margin:0;font-size:14.5px}
+  .panel{
+    background:var(--bg-raised);border:1px solid var(--line);
+    border-radius:var(--radius);padding:22px 24px;
+  }
+  .panel h3{font-size:16px;font-weight:620;margin-bottom:12px}
+  .panel ul{margin:0;padding-left:18px;color:var(--text-dim);font-size:14.5px}
+  .panel li{margin:7px 0}
+
+  /* ---------- about ---------- */
+  .about{display:grid;gap:34px;grid-template-columns:1fr 1fr}
+  @media (max-width:760px){ .about{grid-template-columns:1fr} }
+  .about p{color:var(--text-dim);margin:0 0 16px}
+  .contact-line{font-size:15px;margin:0 0 10px}
+  .contact-line span{color:var(--text-faint);display:inline-block;min-width:74px}
+
+  /* ---------- footer ---------- */
+  footer{padding:34px 0 46px;color:var(--text-faint);font-size:13.5px}
+  .foot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;align-items:center}
+  .foot a{color:var(--text-dim)}
+
+  .sr-only{
+    position:absolute;width:1px;height:1px;padding:0;margin:-1px;
+    overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap bar">
+    <a class="brand" href="#top" aria-label="Tenuous Studios — home">
+      <img src="images/logo.png" alt="Tenuous Studios" width="410" height="48">
+    </a>
+    <nav>
+      <ul>
+        <li><a href="#flipsaw">Flipsaw</a></li>
+        <li><a href="#press">Press</a></li>
+        <li><a href="#about">About</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <div class="hero">
+    <div class="wrap">
+      <div class="eyebrow">Independent Game Studio</div>
+      <h1>Makers of Flipsaw.</h1>
+      <p>A small studio in the greater Seattle area, building a jigsaw puzzle
+         that refuses to sit still.</p>
+      <div class="cta">
+        <a class="btn btn-primary" href="https://tenuousstudios.itch.io/flipsaw"
+           target="_blank" rel="noopener">Flipsaw on itch.io</a>
+        <a class="btn btn-ghost" href="#flipsaw">See screenshots</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== FLIPSAW ===================== -->
+  <section id="flipsaw">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Flipsaw</h2>
+        <p>Our debut project.</p>
+      </div>
+
+      <!-- ---------- screenshot carousel ---------- -->
+      <div class="carousel" id="shots" role="group" aria-roledescription="carousel"
+           aria-label="Flipsaw screenshots">
+        <div class="viewport">
+          <div class="track" id="track">
+
+            <figure class="slide" data-caption="Pieces scatter across a shifting board — the picture won't hold still.">
+              <picture>
+                <source srcset="images/flipsaw-puzzle.webp" type="image/webp">
+                <img src="images/flipsaw-puzzle.jpg" width="1600" height="989"
+                     alt="A Flipsaw puzzle in progress: donut-patterned pieces scattered over a board of shifting white dashes."
+                     loading="eager" decoding="async">
+              </picture>
+            </figure>
+
+            <figure class="slide" data-caption="Paint God for Color — earn your palette back one puzzle at a time.">
+              <picture>
+                <source srcset="images/flipsaw-paint-god.webp" type="image/webp">
+                <img src="images/flipsaw-paint-god.jpg" width="1600" height="993"
+                     alt="A monochrome line-art living room with a few objects restored to color, captioned Paint God for Color."
+                     loading="lazy" decoding="async">
+              </picture>
+            </figure>
+
+            <figure class="slide" data-caption="Puzzle menu, tutorial, options — start here.">
+              <picture>
+                <source srcset="images/flipsaw-menu.webp" type="image/webp">
+                <img src="images/flipsaw-menu.jpg" width="1600" height="950"
+                     alt="The Flipsaw title screen with Puzzle Menu, Tutorial, Options and Exit buttons between two large jigsaw pieces."
+                     loading="lazy" decoding="async">
+              </picture>
+            </figure>
+
+          </div>
+        </div>
+
+        <button class="nav-btn prev" id="prev" type="button" aria-label="Previous screenshot">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5 8 12l7 7"/></svg>
+        </button>
+        <button class="nav-btn next" id="next" type="button" aria-label="Next screenshot">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+        </button>
+
+        <div class="caption" id="caption" aria-live="polite"></div>
+      </div>
+      <div class="dots" id="dots" role="tablist" aria-label="Choose a screenshot"></div>
+
+      <!-- ---------- game details ---------- -->
+      <div class="game-meta">
+        <div>
+          <img class="game-wordmark" src="images/flipsaw-wordmark.png" alt="Flipsaw"
+               width="779" height="139">
+          <div><span class="tag">Coming in 2026</span></div>
+          <p>A roguelike jigsaw puzzle game with sudoku elements that adds spontaneity,
+             difficulty, and an element of randomness to reinvent the common jigsaw puzzle.</p>
+          <a class="btn btn-primary" href="https://tenuousstudios.itch.io/flipsaw"
+             target="_blank" rel="noopener">Play it on itch.io</a>
+        </div>
+        <aside class="panel">
+          <h3>At a glance</h3>
+          <ul>
+            <li>Genre &mdash; roguelike jigsaw puzzle</li>
+            <li>Platform &mdash; PC</li>
+            <li>Players &mdash; single player</li>
+            <li>Available now on <a href="https://tenuousstudios.itch.io/flipsaw"
+                target="_blank" rel="noopener">itch.io</a></li>
+          </ul>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== PRESS ===================== -->
+  <section id="press">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Press kit</h2>
+        <p>Everything a writer, streamer, or curator needs. If something's missing, just ask.</p>
+      </div>
+
+      <div class="press-grid">
+        <div>
+          <dl class="facts">
+            <div><dt>Studio</dt><dd>Tenuous Studios</dd></div>
+            <!-- TODO: real founding year -->
+            <div><dt>Founded</dt><dd>20XX</dd></div>
+            <div><dt>Based in</dt><dd>Greater Seattle area, USA</dd></div>
+            <div><dt>Team</dt><dd>Small independent team</dd></div>
+            <div><dt>Debut title</dt><dd>Flipsaw &mdash; coming in 2026</dd></div>
+            <div><dt>Platforms</dt><dd>PC</dd></div>
+            <div><dt>Where to play</dt>
+                 <dd><a href="https://tenuousstudios.itch.io/flipsaw" target="_blank"
+                        rel="noopener">tenuousstudios.itch.io/flipsaw</a></dd></div>
+            <!-- TODO: confirm this address exists -->
+            <div><dt>Press contact</dt>
+                 <dd><a href="mailto:press@tenuousstudios.com">press@tenuousstudios.com</a></dd></div>
+          </dl>
+        </div>
+
+        <aside class="panel">
+          <h3>Assets</h3>
+          <ul>
+            <!-- TODO: add zips to the repo and point these at them -->
+            <li>Logo pack &mdash; <a href="#">logo-pack.zip</a></li>
+            <li>Flipsaw screenshots &mdash; <a href="#">flipsaw-screenshots.zip</a></li>
+            <li>Key art &mdash; <a href="#">key-art.zip</a></li>
+          </ul>
+          <h3 style="margin-top:22px">Permissions</h3>
+          <ul>
+            <li>You may monetize videos and streams of our games.</li>
+            <li>No permission needed &mdash; a link back is appreciated.</li>
+          </ul>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== ABOUT ===================== -->
+  <section id="about">
+    <div class="wrap">
+      <div class="section-head"><h2>About</h2></div>
+      <div class="about">
+        <div>
+          <p>We are a small team based in the greater Seattle area. Flipsaw is our debut project.</p>
+        </div>
+        <div>
+          <h3 style="font-size:16px;font-weight:620;margin-bottom:14px">Get in touch</h3>
+          <!-- TODO: confirm these addresses exist before publishing -->
+          <p class="contact-line"><span>General</span>
+             <a href="mailto:hello@tenuousstudios.com">hello@tenuousstudios.com</a></p>
+          <p class="contact-line"><span>Press</span>
+             <a href="mailto:press@tenuousstudios.com">press@tenuousstudios.com</a></p>
+          <p class="contact-line"><span>itch.io</span>
+             <a href="https://tenuousstudios.itch.io/" target="_blank" rel="noopener">tenuousstudios.itch.io</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <div>&copy; <span id="yr">2026</span> Tenuous Studios</div>
+    <!-- TODO: real profile URLs, or delete the ones you don't use -->
+    <div>
+      <a href="https://tenuousstudios.itch.io/" target="_blank" rel="noopener">itch.io</a> &nbsp;·&nbsp;
+      <a href="#">Facebook</a> &nbsp;·&nbsp;
+      <a href="#">X</a> &nbsp;·&nbsp;
+      <a href="#">Instagram</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  document.getElementById('yr').textContent = new Date().getFullYear();
+
+  var track   = document.getElementById('track');
+  var slides  = Array.prototype.slice.call(track.children);
+  var dotsBox = document.getElementById('dots');
+  var caption = document.getElementById('caption');
+  var root    = document.getElementById('shots');
+  var i = 0;
+
+  if (slides.length < 2) {
+    document.getElementById('prev').hidden = true;
+    document.getElementById('next').hidden = true;
+  }
+
+  // build dots from the slides that are actually present
+  var dots = slides.map(function (s, n) {
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'dot';
+    b.setAttribute('role', 'tab');
+    b.innerHTML = '<span class="sr-only">Screenshot ' + (n + 1) + '</span>';
+    b.addEventListener('click', function () { go(n); });
+    dotsBox.appendChild(b);
+    return b;
+  });
+
+  function go(n) {
+    i = (n + slides.length) % slides.length;
+    track.style.transform = 'translateX(' + (-i * 100) + '%)';
+    dots.forEach(function (d, k) { d.setAttribute('aria-current', k === i ? 'true' : 'false'); });
+    slides.forEach(function (s, k) { s.setAttribute('aria-hidden', k === i ? 'false' : 'true'); });
+    caption.textContent = slides[i].dataset.caption || '';
+  }
+
+  document.getElementById('prev').addEventListener('click', function () { go(i - 1); });
+  document.getElementById('next').addEventListener('click', function () { go(i + 1); });
+
+  // keyboard
+  root.tabIndex = 0;
+  root.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowLeft')  { e.preventDefault(); go(i - 1); }
+    if (e.key === 'ArrowRight') { e.preventDefault(); go(i + 1); }
+  });
+
+  // swipe / drag
+  var x0 = null;
+  root.addEventListener('pointerdown', function (e) { x0 = e.clientX; });
+  root.addEventListener('pointerup', function (e) {
+    if (x0 === null) return;
+    var dx = e.clientX - x0;
+    x0 = null;
+    if (Math.abs(dx) > 45) go(dx < 0 ? i + 1 : i - 1);
+  });
+  root.addEventListener('pointercancel', function () { x0 = null; });
+
+  go(0);
+})();
+</script>
+
+</body>
+</html>
